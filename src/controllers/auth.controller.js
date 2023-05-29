@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { createUser, emailQuery, updateLastLogin } from "../repositories/auth.respository.js";
+import { createUser, emailQuery, updateLastLogin, usernameQuery } from "../repositories/auth.respository.js";
 
 dotenv.config();
 
@@ -10,7 +10,9 @@ export async function postRegister(req, res){
 
     try {
         const emailSearch=await emailQuery({email});
-        if(emailSearch.rowCount) return res.sendStatus(409);
+        if(emailSearch.rowCount) return res.status(409).send("email já esta sendo usado");
+        const usernameSearch=await usernameQuery({username});
+        if(usernameSearch.rowCount) return res.status(409).send("username já esta sendo usado");
         const hash=bcrypt.hashSync(password, 10);
         console.log(hash);
         await createUser({username, email, photo, bio, password: hash});
