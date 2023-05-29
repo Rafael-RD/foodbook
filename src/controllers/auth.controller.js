@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { createUser, emailQuery, updateLastLogin, usernameQuery } from "../repositories/auth.respository.js";
+import { createUser, updateLastLogin } from "../repositories/auth.respository.js";
+import { emailQuery, usernameQuery } from "../repositories/users.repository.js";
 
 dotenv.config();
 
